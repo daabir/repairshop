@@ -8,7 +8,7 @@ export const customers = pgTable("customers", {
     email: varchar("email").notNull(),
     phone: varchar("phone").notNull(),
     address1: varchar("address1").notNull(),
-    address2: varchar("address2").notNull(),
+    address2: varchar("address2"),
     city: varchar("city").notNull(),
     state: varchar("state", { length: 2 }).notNull(),
     pin: varchar("pin", { length: 6 }).notNull(),
