@@ -4,11 +4,11 @@ import { useForm } from "react-hook-form"
 import { zodResolver} from "@hookform/resolvers/zod"
 import { Form } from "@/components/ui/form"
 import { Button } from "@/components/ui/button"
-import { InputWithLabel } from "@/components/inputs/InputWithLabel"
 import { insertCustomerSchema, type insertCustomerSchemaType, type selectCustomerSchemaType } from "@/zod-schemas/customer"
 import { TextAreaWithLabel } from "@/components/inputs/TextAreaWithLabel"
 import { SelectWithLabel } from "@/components/inputs/SelectWithLabel"
 import { StatesArray } from "@/constants/StatesArray"
+import { InputWithLabel } from "@/components/inputs/InputWithLabel"
 
 type Props = {
     customer?:selectCustomerSchemaType,
