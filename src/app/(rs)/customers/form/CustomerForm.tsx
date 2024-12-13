@@ -105,7 +105,7 @@ export default function CustomerForm({customer}: Props) {
                         className="h-40"
                     />
 
-                    {isLoading? <p>Loading ...</p> : isManager ? (
+                    {isLoading? <p>Loading ...</p> : isManager && customer?.id ? (
                     <CheckboxWithLabel<insertCustomerSchemaType>
                         fieldTitle="Active"
                         nameInSchema="active"
