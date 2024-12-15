@@ -21,4 +21,41 @@ export const saveCustomerAction = actionClient
         const { isAuthenticated } = getKindeServerSession()
         const isAuth = await isAuthenticated()
         if(!isAuth) redirect('/login')
+        
+        //New Customer
+        if(customer.id === 0){
+            const result = await db.insert(customers).values({
+                firstName: customer.firstName,
+                lastName: customer.lastName,
+                email: customer.email,
+                phone: customer.phone,
+                address1: customer.address1,
+                ...(customer.address2?.trim() ? { address2: customer.address2} : {}),
+                city: customer.city,
+                state: customer.state,
+                pin: customer.pin,
+                ...(customer.notes?.trim() ? {notes: customer.notes } : {}),
+            }).returning({ insertedId: customers.id })
+            
+            return { message: `Customer ID # ${result[0].insertedId} created successfully`}
+        }
+
+        //Existing cust
+        const result = await db.update(customers)
+            .set({
+                firstName: customer.firstName,
+                lastName: customer.lastName,
+                email: customer.email,
+                phone: customer.phone,
+                address1: customer.address1,
+                address2: customer.address2?.trim() ?? null,
+                city: customer.city,
+                state: customer.state,
+                pin: customer.pin,
+                notes: customer.notes?.trim() ?? null,
+            })
+            .where(eq(customers.id, customer.id!))
+            .returning({updatedId: customers.id})
+        
+        return { message: `Customer ID # ${result[0].updatedId} updated successfully`}
     })
