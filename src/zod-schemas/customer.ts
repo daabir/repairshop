@@ -8,8 +8,8 @@ export const insertCustomerSchema = createInsertSchema(customers, {
     city: (schema) => schema.city.min(1, "City is required"),
     state: (schema) => schema.state.length(2, "State must be a two-letter ISO code."),
     email: (schema) => schema.email.email("Invalid email address"),
-    pin: (schema) => schema.pin.regex(/^\d{6}(-\d{5})?$/, "Invalid pin code."),
-    phone: (schema) => schema.phone.regex(/^d{4}-\d{6}$/, "Invalid phone number format. Use XXXX-XXXXXX format."),
+    pin: (schema) => schema.pin.regex(/^\d{5,6}$/, "Invalid pin code."),
+    phone: (schema) => schema.phone.regex(/^\d{4}-\d{6}$/, "Invalid phone number format. Use XXXX-XXXXXX format."),
 
 })
 
