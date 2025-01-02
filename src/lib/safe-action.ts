@@ -8,7 +8,7 @@ export const actionClient = createSafeActionClient({
         })
     },
     handleServerError(e){
-        if (e.constructor.name === 'DatabaseError') {
+        if (e.constructor.name === 'NeonDbError') {
             return "Database Error!"
         }
         return e.message
