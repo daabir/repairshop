@@ -6,10 +6,12 @@ import {
     flexRender,
     getCoreRowModel,
     useReactTable,
+    SortingState,
     ColumnFiltersState,
     getPaginationRowModel,
     getFilteredRowModel,
     getFacetedUniqueValues,
+    getSortedRowModel
 } from "@tanstack/react-table"
 
 import {
@@ -23,6 +25,9 @@ import {
 import {
     CircleCheckIcon,
     CircleXIcon,
+    ArrowUpDown,
+    ArrowDown,
+    ArrowUp,
 } from "lucide-react"
 
 import { useRouter } from "next/navigation"
@@ -39,6 +44,12 @@ type RowType = TicketSearchResultsType[0]
 export default function TicketTable({ data }: Props) {
     const router = useRouter()
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
+    const [sorting, setSorting] = useState<SortingState>([
+        {
+            id: "ticketDate",
+            desc: false, // false for ascending to match sql set
+        }
+    ])
 
     const columnHeadersArray: Array<keyof RowType> = [
         "ticketDate",
@@ -70,7 +81,26 @@ export default function TicketTable({ data }: Props) {
             return value
         }, {
             id: columnName,
-            header: columnName[0].toUpperCase() + columnName.slice(1),
+            header: ({ column }) => {
+                return (
+                    <Button 
+                        variant="ghost"
+                        className="pl-1 w-full flex justify-between"
+                        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                    >
+                        {columnName[0].toUpperCase() + columnName.slice(1)}
+                        {column.getIsSorted() === "asc" && (
+                            <ArrowUp className="ml-2 h-4 w-4" />
+                        )}
+                        {column.getIsSorted() === "desc" && (
+                            <ArrowDown className="ml-2 h-4 w-4" />
+                        )} 
+                        {column.getIsSorted() !== "desc" && column.getIsSorted() !== "asc" && (
+                            <ArrowUpDown className="ml-2 h-4 w-4" />
+                        )} 
+                        </Button>
+                )
+            },
             cell: ({ getValue }) => { //presentational function
                 const value = getValue()
                 if (columnName === "completed") {
@@ -89,6 +119,7 @@ export default function TicketTable({ data }: Props) {
         data,
         columns,
         state: {
+            sorting,
             columnFilters,
         },
         initialState: {
@@ -97,10 +128,12 @@ export default function TicketTable({ data }: Props) {
             },
         },
         onColumnFiltersChange: setColumnFilters,
+        onSortingChange: setSorting,
         getCoreRowModel: getCoreRowModel(),
         getPaginationRowModel: getPaginationRowModel(),
         getFilteredRowModel: getFilteredRowModel(),
         getFacetedUniqueValues: getFacetedUniqueValues(),
+        getSortedRowModel: getSortedRowModel(),
     })
 
     return (
@@ -162,6 +195,12 @@ export default function TicketTable({ data }: Props) {
                     </p>
                 </div>
                 <div className="space-x-1">
+                    <Button
+                        variant="outline"
+                        onClick={() => { table.resetSorting() }}
+                    >
+                        Reset Sorting
+                    </Button>
                     <Button
                         variant="outline"
                         onClick={() => { table.resetColumnFilters() }}
