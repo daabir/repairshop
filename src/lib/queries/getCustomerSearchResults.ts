@@ -19,5 +19,6 @@ export async function getCustomerSearchResults(searchText:string) {
             //custom sql query to implement first and last name searches. (note: this may make the app slightly slow)
             sql`lower(concat(${customers.firstName}, ' ', ${customers.lastName})) LIKE ${`%${searchText.toLowerCase().replace(' ', '%')}%`}`
         ))
+        .orderBy(customers.lastName)
     return results
 }
