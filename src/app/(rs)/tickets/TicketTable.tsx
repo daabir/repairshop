@@ -69,6 +69,14 @@ export default function TicketTable({ data }: Props) {
         "completed",
     ]
 
+    const columnWidths = {
+        completed: 150,
+        ticketDate: 100,
+        title: 250,
+        tech: 225,
+        email: 225,
+    }
+
     const columnHelper = createColumnHelper<RowType>()
 
     const columns = columnHeadersArray.map((columnName) => {
@@ -89,6 +97,7 @@ export default function TicketTable({ data }: Props) {
             return value
         }, {
             id: columnName,
+            size: columnWidths[columnName as keyof typeof columnWidths] ?? undefined,
             header: ({ column }) => {
                 return (
                     <Button
@@ -151,7 +160,7 @@ export default function TicketTable({ data }: Props) {
                         {table.getHeaderGroups().map((headerGroup) => (
                             <TableRow key={headerGroup.id}>
                                 {headerGroup.headers.map((header) => (
-                                    <TableHead key={header.id} className="bg-secondary p-1">
+                                    <TableHead key={header.id} className="bg-secondary p-1" style={{width: header.getSize()}}>
                                         <div>
                                             {header.isPlaceholder
                                                 ? null
@@ -162,7 +171,10 @@ export default function TicketTable({ data }: Props) {
                                         </div>
                                         {header.column.getCanFilter() ? (
                                             <div className="grid place-content-center">
-                                                <Filter column={header.column} />
+                                                <Filter 
+                                                    column={header.column} 
+                                                    filteredRows = {table.getFilteredRowModel().rows.map(row=>row.getValue(header.column.id))}
+                                                />
                                             </div>
                                         ) : null}
                                     </TableHead>
