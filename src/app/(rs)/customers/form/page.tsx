@@ -37,10 +37,10 @@ export default async function CustomerFormPage({
             }
             
             // customer form component
-            return <CustomerForm isManager={isManager} customer={customer}/>
+            return <CustomerForm key={customerId} isManager={isManager} customer={customer}/>
         } else {
             // new customer
-            return <CustomerForm isManager={isManager} />
+            return <CustomerForm key="new" isManager={isManager} />
         }
     } catch (e) {
         if (e instanceof Error){
