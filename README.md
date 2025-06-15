@@ -1,6 +1,6 @@
 ## What is this project?
 
-A Ticket management application built in Next-JS(typescript). The application lets you create and manage tickets, customers, employees etc.
+A Ticket management application built in Next.js (typescript). The application lets you create and manage tickets, customers, employees etc.
 
 ## Requirements
 
